@@ -1,5 +1,7 @@
 ## Custom Assets Library Plugin
-The Custom Assets Library Plugin is the successor to EAL and EAR which converts packs to use the TaleWeave Interface. 
+The Custom Assets Library Plugin (CALP) is the successor to EAL and EAR which converts packs to use the TaleWeave Interface.
+Supplementary functionality like Auras, Effects, Filters, Transformations, Animations and Sound has been moved to the
+new Custom Assets Library Plugin Integrated Extension (CALPIE) plugin.
 
 ## Installing With R2ModMan
 This package is designed specifically for R2ModMan and Talespire. 
@@ -15,90 +17,36 @@ CALP has a bunch of keyboard shortcuts for triggering additional functionality. 
 keys by editing the R2ModMan configuration for the CALP plugin. Keyboard shortcuts are divided into two sub-sections: functionality
 triggers and asset spawn modifeirs. 
 
-#### Functionality Triggers
-
-Press these keys while a mini is selected to trigger the corresponding effect if supported.
-
-```
-+-----------------+------------------------------------------------------------------+
-| Modifier Keys   | Results                                                          |
-+-----------------+------------------------------------------------------------------+
-+-----------------+------------------------------------------------------------------+
-| LControl + 1    | Trigger Animation "Anim01"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 2    | Trigger Animation "Anim02"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 3    | Trigger Animation "Anim03"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 4    | Trigger Animation "Anim04"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 5    | Trigger Animation "Anim05"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 6    | Trigger Animation "Anim06"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 7    | Trigger Animation "Anim07"                                       |
-+-----------------+------------------------------------------------------------------+
-| LControl + 8    | Prompt for animation name and play it                            |
-+-----------------+------------------------------------------------------------------+
-| LControl + 9    | Start playing associated audio                                   |
-+-----------------+------------------------------------------------------------------+
-| LControl + 0    | Stop playing animation and audio                                 |
-+-----------------+------------------------------------------------------------------+
-``` 
-
-#### Asset Spawn Modifiers
-
-When selecting an asset from the Talespire Library the asset will be loaded based on the kind specified in the asset bundle or as a
-creature if the asset does not specify the kind in its info.txt file. However, it is possible to override the kind indicated in the
-asset bundle with a different kind by holding down the corresponding modifier key while selecting it from the library and when placing
-it down (if applicable). The following tables show what modifier keys select what kind:
-
-```
-+-----------------+------------------------------------------------------------------+
-| Modifier Keys   | Resulting Kind                                                   |
-+-----------------+------------------------------------------------------------------+
-+-----------------+------------------------------------------------------------------+
-| None            | Uses kind specified in asset bundle or creature if not specified |
-+-----------------+------------------------------------------------------------------+
-| Left Shift      | Processes spawn as if the kind was creature                      |
-+-----------------+------------------------------------------------------------------+
-| Right Shift     | Processes spawn as if the kind was transform                     |
-+-----------------+------------------------------------------------------------------+
-| Left Control    | Processes spawn as if the kind was effect                        |
-+-----------------+------------------------------------------------------------------+
-| Right Control   | Processes spawn as if the kind was aura                          |
-+-----------------+------------------------------------------------------------------+
-| Left Alt        | Processes spawn as if the kind was audio                         |
-+-----------------+------------------------------------------------------------------+
-| Right Alt       | Processes spawn as if the kind was filter                        |
-+-----------------+------------------------------------------------------------------+
-```
-
 ### Asset Types
 
 ```
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Kind            | Shader            | Transparency       | Hide               | Comments                                           |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Creature        | TS/Creature       | Not Supported      | Supported          | This is the fefault for minis                      |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Audio           | TS/Creature       | Not Supported      | Supported          | Mini starts playing audio when place on board      |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Auras           | From Asset Bundle | Supported          | Not Supported      | Not yet implemented in CAPL                        |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Effect          | From Asset Bundle | Supported          | Not Supported      | Used to create minis with non-TS shaders           |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Transform       | TS/Creature       | Not Supported      | Supported          | Not yet implemented in CAPL                        |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Prop            | TS/Placeable      | Not Supported      | Supported          | Not yet implemented in CAPL                        |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Tile            | TS/Placable       | Not Supported      | Supported          | Not yet implemented in CAPL                        |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| (Multi) Slab    | TS/Placable       | Not Supported      | Supported          | Not yet implemented in CAPL                        |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
-| Encounter       | Based On Asset    | Based On Asset     | Based On Asset     | Not yet implemented in CAPL                        |
-+-----------------+-------------------+--------------------+--------------------+----------------------------------------------------+
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Kind            | Armature  | Shader            | Transparency       | Hide               | Comments                                           |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Any             |    Yes    | From Asset Bundle | Supported          | Not Supported      | Applies to the armature meshes only                |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Creature        |    No     | TS/Creature       | Not Supported      | Supported          | This is the default for minis                      |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Audio           |    No     | TS/Creature       | Not Supported      | Supported          | Mini starts playing audio when place on board*     |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Auras           |    No     | From Asset Bundle | Supported          | Supported*         | Not yet implemented in CAPL*                       |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Effect          |    No     | From Asset Bundle | Supported          | Supported*         | Used to create minis with non-TS shaders*          |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Transform       |    No     | TS/Creature       | Not Supported      | Supported          | Not yet implemented in CAPL*                       |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Prop            |    No     | TS/Placeable      | Not Supported      | Supported          | Not yet implemented in CAPL                        |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Tile            |    No     | TS/Placable       | Not Supported      | Not Supported      | Not yet implemented in CAPL                        |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| (Multi) Slab    |    N/A    | TS/Placable       | Not Supported      | Not Supported      | Partially supported. Height bar does not work*     |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
+| Encounter       |    N/A    | Based On Asset    | Based On Asset     | Supported          | Not yet implemented in CAPL*                       |
++-----------------+-----------+-------------------+--------------------+--------------------+----------------------------------------------------+
 ```
+
+Functionality marked by ```*``` required CALPIE to function.
 
 ## Developer Usage (Asset Creators)
 
@@ -133,6 +81,36 @@ To help content developers use their custom assets even on Vanilla Talespire (no
 
 To remove the link, just go to the Talwweaver folder and delete the corresponding sub-folder (not the d71427a1-5535-4fa7-82d7-4ca1e75edbfd folder since that is the core TS folder).
 
+### Info.Txt Files
+
+Below is a list of the currently supported proeprties in the info.txt file. Any of the old EAR properties (which are not yet listed here) are accepted but will be ignored.
+
+```
+{
+  "name": "Assasin",
+  "prefab": "",
+  "kind": "Effect",
+  "category": "Creature",
+  "groupName": "Human",
+  "description": "Assasin",
+  "tags": "Human,Rogue,Assasin",
+  "author": "Lord Ashes",
+  "version": "1.0",
+  "comment": "Maximo source",
+  "size": 1.0,
+  "code": "",
+  "meshAdjustments":
+  {
+    "size": "1.0,1.0,1.0",
+    "rotationOffset": "0.0,0.0,0.0",
+    "positionOffset": "0.0,0.0,0.0"
+  }
+}
+```
+
+All properties are optional and will take the default if not provided. The "prefab" property allow using a different prefab name than the asset bundle name. If empty the
+prefab will default to the asset bundle name.
+
 ## Binary index writer usage (BepInEx Dev)
 the index writer as a supplied interface and method to write the pack. PackContent data structure does not use blob references or ECS upon initial construction. 
 ```CSharp
@@ -142,6 +120,12 @@ After completion, the WritePack method will convert it into the ECS Blob structu
 
 ## Changelog
 ```
+2.1.0: Added SmartJsonConvert to allow plugin to work in different locale regions without needing to switch region settings before running Talespire.
+2.0.0: Moved supplementary functionality to CALPIE.
+1.6.0: Added Effect hide functionality.
+1.6.0: Added checks for improper asset bundles with visual warning and list in the logs.
+1.5.0: Added scripts for unregistering and registering for vanilla.
+1.5.0: Added option to tweak index.json files.
 1.4.1: Updated documentation. No plugin change.
 1.4.0: Added animation functionality
 1.4.0: Added sound functionality
