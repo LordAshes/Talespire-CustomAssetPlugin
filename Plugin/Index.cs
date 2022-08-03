@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 
-namespace LordAshes
+namespace PluginMasters
 {
     public partial class CustomAssetsPlugin : BaseUnityPlugin
     {

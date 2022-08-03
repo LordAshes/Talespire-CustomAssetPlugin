@@ -9,7 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace LordAshes
+namespace PluginMasters
 {
     public partial class CustomAssetsPlugin : BaseUnityPlugin
     {
@@ -39,7 +39,7 @@ namespace LordAshes
                                 {
                                     modListText.text += "\n\nMods Currently Installed:\n";
                                 }
-                                modListText.text += "\nLord Ashes' " + bepInPlugin.Name + " - " + bepInPlugin.Version;
+                                modListText.text += "\nPlugin Masters' " + bepInPlugin.Name + " - " + bepInPlugin.Version;
                             }
                         }
                     }

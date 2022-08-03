@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C303405D-E66C-4316-9CDB-4E3CA15C6360}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>CustomAssetsPlugin</RootNamespace>
-    <AssemblyName>CustomAssetsPlugin</AssemblyName>
+    <RootNamespace>CustomAssetsLibraryPlugin</RootNamespace>
+    <AssemblyName>CustomAssetsLibraryPlugin</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,15 +36,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\AppData\Roaming\r2modmanPlus-local\TaleSpire\profiles\Modded\BepInEx\core\0Harmony.dll</HintPath>
-    </Reference>
     <Reference Include="BepInEx">
       <HintPath>D:\moddingtalespire-2.3.0\bepinexbin\BepInEx\core\BepInEx.dll</HintPath>
-    </Reference>
-    <Reference Include="BepInEx.Harmony">
-      <HintPath>..\..\..\..\AppData\Roaming\r2modmanPlus-local\TaleSpire\profiles\Modded\BepInEx\core\BepInEx.Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Bouncyrock.BouncePackage.Runtime">
       <HintPath>D:\Steam\steamapps\common\TaleSpire\TaleSpire_Data\Managed\Bouncyrock.BouncePackage.Runtime.dll</HintPath>
@@ -54,7 +47,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Steam\steamapps\common\TaleSpire\TaleSpire_Data\Managed\Bouncyrock.TaleSpire.3rdParty.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Bouncyrock.TaleSpire.AssetManagement, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Bouncyrock.TaleSpire.AssetManagement">
+      <HintPath>D:\Steam\steamapps\common\TaleSpire\TaleSpire_Data\Managed\Bouncyrock.TaleSpire.AssetManagement.dll</HintPath>
+    </Reference>
     <Reference Include="Bouncyrock.TaleSpire.BounceTools.Runtime, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Steam\steamapps\common\TaleSpire\TaleSpire_Data\Managed\Bouncyrock.TaleSpire.BounceTools.Runtime.dll</HintPath>
@@ -77,6 +72,9 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SmartJsonConvert">
+      <HintPath>..\..\SmartJsonConvert\SmartJsonConvert\bin\Debug\SmartJsonConvert.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -90,10 +88,6 @@
     <Reference Include="Unity.Mathematics, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Steam\steamapps\common\TaleSpire\TaleSpire_Data\Managed\Unity.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Physics, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Steam\steamapps\common\TaleSpire\TaleSpire_Data\Managed\Unity.Physics.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -131,15 +125,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssetDataPluginSoftDependency.cs" />
     <Compile Include="AssetInfo.cs" />
-    <Compile Include="Helpers.cs" />
     <Compile Include="Index.cs" />
-    <Compile Include="Patches\Patches.cs" />
-    <Compile Include="PostSpawnHandler.cs" />
-    <Compile Include="PreSpawnHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestHandler.cs" />
     <Compile Include="Setup.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Plugin.cs" />

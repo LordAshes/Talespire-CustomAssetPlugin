@@ -6,12 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace LordAshes
+namespace PluginMasters
 {
     public partial class CustomAssetsPlugin : BaseUnityPlugin
     {
         public static partial class Data
         {
+            public class SlabInfo
+            {
+                public Unity.Mathematics.float3 position { get; set; }
+                public string code { get; set; } = "";
+
+            }
+
             public class Locations
             {
                 public readonly string root = "0.0,0.0,0.0,0.0,0.0,0.0";
@@ -47,6 +54,7 @@ namespace LordAshes
             {
                 public string id { get; set; } = "";
                 public string name { get; set; } = "";
+                public string prefab { get; set; } = "";
                 public string kind { get; set; } = "";
                 public string category { get; set; } = "";
                 public string groupName { get; set; } = "";
@@ -75,6 +83,7 @@ namespace LordAshes
                     {
                         id = this.id,
                         name = this.name,
+                        prefab = this.prefab,
                         kind = this.kind,
                         category = this.category,
                         groupName = this.groupName,
