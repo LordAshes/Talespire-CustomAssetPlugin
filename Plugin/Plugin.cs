@@ -14,7 +14,7 @@ namespace PluginMasters
         // Plugin info
         public const string Name = "Custom Assets Library Plugin";
         public const string Guid = "org.lordashes.plugins.customassetslibrary";
-        public const string Version = "2.1.0.0";
+        public const string Version = "2.2.0.0";
 
         // Public Enum
         public enum DiagnosticMode

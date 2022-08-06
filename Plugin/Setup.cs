@@ -83,34 +83,37 @@ namespace PluginMasters
                                 catch (Exception x)
                                 {
                                     Debug.LogWarning("Custom Asset Library Plugin: File '" + assetFile + "' Does Not Seem To Be A Valid Asset Bundle.");
-                                    if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.high) { Debug.Log("Custom Asset Library Plugin: File '" + assetFile + "' Generated " + x); }
+                                    if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.LogException(x); }
                                     continue;
                                 }
                                 // Check Info File
                                 string json = "";
                                 try
                                 {
-                                    if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.Log("Custom Asset Library Plugin: Reading 'info.txt' File"); }
-                                    json = ab.LoadAsset<TextAsset>("Info.txt").text;
+                                    if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.Log("Custom Asset Library Plugin: Looking For 'info.txt' File"); }
+                                    json = ab.LoadAsset<TextAsset>("info.txt").text;
                                 }
                                 catch(Exception)
                                 {
                                     if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.high) { Debug.LogWarning("Custom Asset Library Plugin: AssetBundle '" + assetFile + "' Does No Seem To Have An Info.Txt File. Using Default."); }
-                                    info = new Data.AssetInfo()
+                                    if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) 
                                     {
-                                        name = System.IO.Path.GetFileNameWithoutExtension(assetFile),
-                                        kind = "Creature",
-                                        category = "Creature",
-                                        groupName = "Custom Content",
-                                    };
+                                        foreach(string assetName in ab.GetAllAssetNames())
+                                        {
+                                            Debug.Log("Custom Asset Library Plugin: AssetBundle '" + assetFile + "' Contains '"+assetName+"'");
+                                        }
+                                    }
+                                    json = "";
                                 }
                                 try
                                 {
+                                    if (json == "") { throw new Exception("No 'info.txt' file. Using default."); }
                                     if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.Log("Custom Asset Library Plugin: Parsing 'info.txt' File"); }
                                     info = LordAshes.SmartJsonConvert.DeserializeObject<Data.AssetInfo>(json);
                                     if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra)
                                     {
                                         Debug.Log("Custom Asset Library Plugin: Locale Conversion Results: "+ LordAshes.SmartJsonConvert.GetLastConversionInfo());
+                                        Debug.Log("Custom Asset Library Plugin: Info =\r\n" + JsonConvert.SerializeObject(info));
                                     }
                                 }
                                 catch (Exception)
@@ -139,25 +142,46 @@ namespace PluginMasters
                                     // Check Prefab
                                     string prefabName = (info.prefab != "") ? info.prefab : System.IO.Path.GetFileNameWithoutExtension(assetFile).ToLower();
                                     string[] items = ab.GetAllAssetNames();
-                                    string fallback = "";
-                                    bool found = false;
-                                    foreach(string item in items)
+                                    for(int i=0; i<items.Length; i++)
                                     {
-                                        if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.Log("Custom Asset Library Plugin: Asset Bundle '" + System.IO.Path.GetFileNameWithoutExtension(assetFile) + "' Contains '"+item+"'"); }
-                                        if (item.ToLower().Contains(prefabName+".prefab")) { found = true; break; }
-                                        if (item.ToLower().EndsWith(".prefab")) { fallback = item; }
+                                        items[i] = items[i].ToLower();
                                     }
-                                    if(!found)
+                                    try
                                     {
-                                        if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.high) { Debug.LogWarning("Custom Asset Library Plugin: Violation: AssetBundle '" + assetFile + "' Violates The Prime Directive By Not Having A '" + System.IO.Path.GetFileNameWithoutExtension(assetFile) + "' Prefab."); }
-                                        violations.Add("Prefab '" + prefabName + "' Missing In Asset Bundle '" + assetFile + "'");
-                                        if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.high) { Debug.LogWarning("Custom Asset Library Plugin: Using Fallback Prefab '" + fallback + "'"); }
-                                        info.prefab = fallback;
+                                        if (items.Where(s => s.EndsWith("/" + prefabName.ToLower() + ".prefab")).Count() > 0)
+                                        {
+                                            if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.Log("Custom Asset Library Plugin: Found Prefab '" + prefabName + "' Matching Asset Bundle File Name"); }
+                                        }
+                                        else if (items.Where(s => s.StartsWith(prefabName.ToLower() + ".prefab") && s.EndsWith(prefabName.ToLower() + ".prefab")).Count() > 0)
+                                        {
+                                            if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra) { Debug.Log("Custom Asset Library Plugin: Found Prefab '" + prefabName + "' Matching Asset Bundle File Name"); }
+                                        }
+                                        else
+                                        {
+                                            Debug.LogWarning("Custom Asset Library Plugin: Did Not Find Prefab '" + prefabName + "' In Asset Bundle. Using '" + items.Where(s => s.ToUpper().EndsWith(".PREFAB")).ElementAt(0) + "'");
+                                            violations.Add("Asset Bundle '" + ab.name + "' Does Not Contain '" + prefabName + "'");
+                                            prefabName = items.Where(s => s.ToUpper().EndsWith(".PREFAB")).ElementAt(0);
+                                            foreach (string assetName in ab.GetAllAssetNames())
+                                            {
+                                                Debug.Log("Custom Asset Library Plugin: AssetBundle '" + assetFile + "' Contains '" + assetName + "'");
+                                            }
+                                        }
                                     }
+                                    catch(Exception)
+                                    {
+                                        Debug.LogWarning("Custom Asset Library Plugin: Did Not Find Any Usabled Prefab In Asset Bundle. Using '" + ab.name + "'");
+                                        violations.Add("Asset Bundle '" + ab.name + "' Does Not Contain '" + prefabName + "'");
+                                        foreach (string assetName in ab.GetAllAssetNames())
+                                        {
+                                            Debug.Log("Custom Asset Library Plugin: AssetBundle '" + assetFile + "' Contains '" + assetName + "'");
+                                        }
+                                    }
+                                    info.prefab = prefabName;
                                 }
-                                catch(Exception)
+                                catch(Exception x)
                                 {
                                     Debug.LogWarning("Custom Asset Library Plugin: Unable To Read Asset Names From AssetBundle '" + assetFile + "'");
+                                    Debug.LogException(x);
                                 }
                                 // Unload asset bundle freeing to for TS to use
                                 if (ab != null) { ab.Unload(false); }
@@ -187,18 +211,6 @@ namespace PluginMasters
                         else
                         {
                             Debug.LogWarning("Custom Asset Library Plugin: Using Cached "+singleFolder+"\\Index.json File For Pack "+index.assetPackId+".");
-                            if (CustomAssetsPlugin.Diagnostics() >= DiagnosticMode.ultra)
-                            {
-                                Debug.LogWarning("Custom Asset Library Plugin: Folder " + BepInEx.Paths.PluginPath + "\\" + folder+" Content:");
-                                foreach (string item in System.IO.Directory.EnumerateFiles(BepInEx.Paths.PluginPath + "\\" + folder))
-                                {
-                                    Debug.LogWarning("Custom Asset Library Plugin: -[FILE]-> " + item);
-                                }
-                                foreach (string item in System.IO.Directory.EnumerateDirectories(BepInEx.Paths.PluginPath + "\\" + folder))
-                                {
-                                    Debug.LogWarning("Custom Asset Library Plugin: -[DIR]-> " + item);
-                                }
-                            }
                             Setup.CreateIndexFile(singleFolder, index.assetPackId, false);
                         }
                     }
@@ -471,7 +483,7 @@ namespace PluginMasters
                 }
                 catch (Exception x) 
                 {
-                    Debug.Log("Custom Asset Library Plugin: Failure Renaming CustomData Folder To Assets: "+x);
+                    Debug.Log("Custom Asset Library Plugin: Failure Renaming CustomData Folder To Assets. The folder '"+singleFolder+"\\CustomData' Or A Sub-Folder Is Probably Open.");
                 }
                 if (writeJsonIndexFile)
                 {
