@@ -120,6 +120,8 @@ After completion, the WritePack method will convert it into the ECS Blob structu
 
 ## Changelog
 ```
+2.2.0: Bug fix for assets without info.txt
+2.2.0: Added more registration logging
 2.1.0: Added SmartJsonConvert to allow plugin to work in different locale regions without needing to switch region settings before running Talespire.
 2.0.0: Moved supplementary functionality to CALPIE.
 1.6.0: Added Effect hide functionality.
